@@ -39,7 +39,7 @@
                     name="q"
                     placeholder="Begin typing to search shows..."
                     hx-get="https://api.tvmaze.com/search/shows"
-                    hx-trigger="keyup changed delay:500ms"
+                    hx-trigger="load delay:1s, keyup changed delay:500ms, search"
                     hx-target="#search-results"
                     hx-indicator=".htmx-indicator"
                     mustache-template="showslist"
