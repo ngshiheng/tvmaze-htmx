@@ -1,0 +1,9 @@
+# tvmaze-htmx
+
+Search for shows in TVmaze's database using TVmaze API.
+
+## Built With:
+
+-   https://www.tvmaze.com/api
+-   https://htmx.org/
+-   https://mustache.github.io/

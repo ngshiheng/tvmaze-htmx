@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>TVmaze Show Search</title>
+        <script src="https://unpkg.com/htmx.org"></script>
+        <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+        <script src="https://unpkg.com/mustache@latest"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/holiday.css"
+        />
+    </head>
+    <body>
+        <script>
+            // CORS workaround for https://api.tvmaze.com/
+            document.addEventListener("htmx:configRequest", (evt) => {
+                evt.detail.headers = [];
+            });
+        </script>
+        <div hx-ext="client-side-templates">
+            <h1>
+                TVmaze Show Search
+                <span class="htmx-indicator">
+                    <img src="bars.svg" />
+                </span>
+            </h1>
+            <div>
+                Search for shows in TVmaze's database using
+                <a href="https://www.tvmaze.com/api#show-search">TVmaze API</a>.
+            </div>
+            <br />
+            <div>
+                <input
+                    autofocus
+                    class="form-control"
+                    type="search"
+                    name="q"
+                    placeholder="Begin typing to search shows..."
+                    hx-get="https://api.tvmaze.com/search/shows"
+                    hx-trigger="keyup changed delay:500ms"
+                    hx-target="#search-results"
+                    hx-indicator=".htmx-indicator"
+                    mustache-template="showslist"
+                />
+            </div>
+
+            <template id="showslist">
+                <thead>
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th>Type</th>
+                    <th>Language</th>
+                    <th>Status</th>
+                    <th>Premiered</th>
+                    <th>Ended</th>
+                </thead>
+                {{#.}}
+                <tr>
+                    <td><a href="{{show.url}}">{{show.name}}</a></td>
+                    <td>{{show.rating.average}}</td>
+                    <td>{{show.type}}</td>
+                    <td>{{show.language}}</td>
+                    <td>{{show.status}}</td>
+                    <td>{{show.premiered}}</td>
+                    <td>{{show.ended}}</td>
+                </tr>
+                {{/.}} {{^.}}
+                <p>No shows found.</p>
+                {{/.}}
+            </template>
+            <table class="table">
+                <tbody id="search-results"></tbody>
+            </table>
+        </div>
+    </body>
+    <footer>
+        Built by <a href="https://jerrynsh.com/">Jerry Ng</a> with
+        <a href="https://htmx.org/">htmx.org</a> and
+        <a href="https://mustache.github.io/">{{ mustache }}</a>.
+    </footer>
+</html>
